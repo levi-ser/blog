@@ -1,70 +1,30 @@
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import './App.css';
 import React from 'react';
+import AboutMe from "./pages/AboutMe";
+import ContactMe from "./pages/ContactMe";
+import Home from "./pages/Home";
+import Post from './pages/Post';
+import Layout from './components/Layout';
+import NewPost from './pages/NewPost';
 
 const App = () => {
+
   return (
     <div className="body">
-      {
-      <div className="container">
-         <div className="left-side">
-            <button>Home</button>
-            <button>About me</button>
-            <button>Contact me</button>   
-            <div className="title">
-               <h1>Welcome to My Blog</h1>
-            </div>
-            <div className="blog-post">
-              <h2>Blog post #1</h2>
-              <h3>"True wisdom comes from admitting one's own ignorance and seeking knowledge through questioning and dialogue..."           <a href="url">Click here for more</a></h3>
-               <p>Published on 400 BCE by Socrates</p>
-            </div>
-            <div className="blog-post">
-              <h2>Blog post #2</h2>
-               <h3>"The ultimate goal of human life is to achieve the highest form of knowledge and understanding through reason and contemplation..."
-                 <a href="url">Click here for more</a></h3>
-               <p>Published on 380 BCE by Plato</p>
-            </div>
-            <div className="blog-post">
-              <h2>Blog post #3</h2>
-               <h3>"Virtue is the key to living a good life and achieving true happiness..."
-                 <a href="url">Click here for more</a></h3>
-               <p>Published on 360 BCE by Aristotle</p>
-            </div>
-         </div>
-         <div className="right-side">
-            <button>Login</button>
-            <div className="tabs-container">
-               <h2>Latest</h2>
-               <div className="latest-list">
-                  <ul className="no-list-style">
-                     <li><span> Blog Post #1</span>
-                       <a href="#">Go To Page</a></li>
-                     <li><span> Blog Post #2</span>
-                       <a href="#">Go To Page</a></li>
-                     <li><span>Blog Post #3</span>
-                       <a href="#">Go To Page</a></li>
-                  </ul>
-               </div>
-               <h2>Popular</h2>
-               <div className="popular-list">
-                  <ul className="no-list-style">
-                     <li><span>Blog Post #1</span>
-                       <a href="#">Go To Page</a></li>
-                     <li><span> Blog Post #2</span>
-                        <a href="#">Go To Page</a>
-                     </li>
-                     <li><span> Blog Post #3</span>
-                        <a href="#">Go To Page</a>
-                     </li>
-                  </ul>
-               </div>
-            </div>
-         </div>
-      </div>
-   
-}
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="about" element={<AboutMe />} />
+          <Route path="contact" element={<ContactMe />} />
+          <Route path="post" element={<Post />} />
+          <Route path="newpost" element={<NewPost />} />
+        </Route>
+      </Routes>
     </div>
+
   );
 }
 
-export default App;
+
+export default App
