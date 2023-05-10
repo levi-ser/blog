@@ -6,6 +6,9 @@ import ContactMe from "./pages/ContactMe";
 import Home from "./pages/Home";
 import Post from './pages/Post';
 import Layout from './components/Layout';
+import NewPost from './pages/NewPost';
+import SignIn from './pages/Login';
+
 
 const App = () => {
 
@@ -17,6 +20,8 @@ const App = () => {
           <Route path="about" element={<AboutMe />} />
           <Route path="contact" element={<ContactMe />} />
           <Route path="post" element={<Post />} />
+          <Route path="newpost" element={<NewPost />} />
+          <Route path="login" element={<SignIn />} />
         </Route>
       </Routes>
     </div>

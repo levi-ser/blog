@@ -7,8 +7,6 @@ const Home = () => {
     <PostsComponent posts={posts} />
 
     <div className="right-side">
-      <button>Login</button>
-
       <div className="tabs-container">
         <h2>Latest</h2>
         <LatestPosts posts={posts} />
