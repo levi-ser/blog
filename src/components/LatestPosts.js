@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+
+
 const LatestPosts = ({ posts }) => {
   return (
     <div className="latest-list">
@@ -5,7 +8,7 @@ const LatestPosts = ({ posts }) => {
         {posts.map(post => (
           <li key={post.id}>
             <span>{post.title}</span>
-            <a href={post.link}>Go To Page</a>
+            <Link to={`/post/${post.id}`}>Read more</Link>
           </li>
         ))}
       </ul>

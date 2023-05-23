@@ -8,23 +8,27 @@ import Post from './pages/Post';
 import Layout from './components/Layout';
 import NewPost from './pages/NewPost';
 import SignIn from './pages/Login';
+import PostsComponent from './components/PostsComponent';
 
 
 const App = () => {
 
   return (
+
     <div className="body">
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="about" element={<AboutMe />} />
           <Route path="contact" element={<ContactMe />} />
-          <Route path="post" element={<Post />} />
           <Route path="newpost" element={<NewPost />} />
           <Route path="login" element={<SignIn />} />
+          <Route path="posts" element={<PostsComponent />} />
+            <Route path="posts/:id" element={<Post />} />
         </Route>
       </Routes>
     </div>
+
 
   );
 }

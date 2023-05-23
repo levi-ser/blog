@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 const PopularPosts = ({ posts }) => {
   return (
     <div className="popular-list">
@@ -5,7 +6,7 @@ const PopularPosts = ({ posts }) => {
         {posts.map(post => (
           <li key={post.id}>
             <span>{post.title}</span>
-            <a href={post.link}>Go To Page</a>
+            <Link to={`/post/${post.id}`}>Read more</Link>
           </li>
         ))}
       </ul>
