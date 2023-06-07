@@ -1,19 +1,33 @@
-import { Link } from 'react-router-dom';
-import React from 'react';
-import BlogPost from './BlogPost';
-function PostsComponent(props) {
-  const { posts } = props;
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+const PostComponent = () => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/posts");
+        setPosts(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   return (
     <div className="left-side">
-      {posts.map(post => (
+      {posts.map((post) => (
         <div key={post.id}>
           <h2>{post.title}</h2>
-          <p>{post.excerpt}</p>
-          <Link to={`/post/${post.id}`}>Read more</Link>
+          <p>{post.body}</p>
+          <p>Created at: {post.created_at}</p>
         </div>
       ))}
     </div>
   );
-}
-export default PostsComponent;
+};
+
+export default PostComponent;

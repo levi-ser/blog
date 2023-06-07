@@ -1,82 +1,52 @@
 import React, { useState } from "react";
-import { styled } from "@mui/system";
-import TextField from "@mui/material/TextField";
-import TextareaAutosize from "@mui/material/TextareaAutosize";
-import Button from "@mui/material/Button";
+import axios from "axios";
 
-const NewPostForm = () => {
+const NewPost = () => {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [body, setBody] = useState("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(`Title: ${title}\nContent: ${content}`);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await axios.post("http://localhost:5000/posts", {
+        title,
+        body,
+      });
+
+      // Reset the form
+      setTitle("");
+      setBody("");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
-    <NewPostContainer>
+    <div>
+      <h2>Create a New Post</h2>
       <form onSubmit={handleSubmit}>
-        <FormControl>
-          <InputLabel htmlFor="title">Title:</InputLabel>
-          <Input
+        <div>
+          <label htmlFor="title">Title:</label>
+          <input
             type="text"
             id="title"
             value={title}
-            onChange={(event) => setTitle(event.target.value)}
-            required
-            className="form-input"
-            style={{ fontWeight: "bold" }} // Add this line
+            onChange={(e) => setTitle(e.target.value)}
           />
-        </FormControl>
-        <FormControl>
-          <InputLabel htmlFor="content">Content:</InputLabel>
-          <Textarea
-            id="content"
-            value={content}
-            onChange={(event) => setContent(event.target.value)}
-            required
-            rows={10}
-            className="form-textarea"
-          />
-        </FormControl>
-        <ButtonContainer>
-          <Button type="submit" variant="contained">
-            Submit
-          </Button>
-        </ButtonContainer>
+        </div>
+        <div>
+          <label htmlFor="body">body:</label>
+          <textarea
+            id="body"
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+          ></textarea>
+        </div>
+        <button type="submit">Submit</button>
       </form>
-    </NewPostContainer>
+    </div>
   );
 };
 
-const NewPostContainer = styled("div")({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-});
-
-const FormControl = styled("div")({
-  marginBottom: "1rem",
-});
-
-const InputLabel = styled("label")({
-  marginBottom: "0.5rem",
-  fontWeight: "bold",
-});
-
-const Input = styled(TextField)({
-  width: "100%",
-});
-
-const Textarea = styled(TextareaAutosize)({
-  width: "100%",
-  resize: "vertical",
-});
-
-const ButtonContainer = styled("div")({
-  display: "flex",
-  justifyContent: "center",
-  marginTop: "2rem",
-});
-
-export default NewPostForm;
+export default NewPost;

@@ -1,13 +1,29 @@
-
-import PostsComponent from "../components/PostsComponent";
-import posts from '../components/Posts';
-import React from "react";
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const Post = () => {
   const { id } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [post, setPost] = useState(null);
 
-  const post = posts.find((post) => post.id === parseInt(id));
+  useEffect(() => {
+    setLoading(true);
+
+    fetch(`http://localhost:5000/posts/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setPost(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        setLoading(false);
+      });
+  }, [id]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (!post) {
     return <div>Post not found</div>;
@@ -17,8 +33,8 @@ const Post = () => {
     <div className="container">
       <div>
         <h1>{post.title}</h1>
-        <h3>{post.excerpt}</h3>
-        <p>Published on {post.publishedOn}</p>
+        <p>{post.body}</p>
+        <p>Created at: {post.created_at}</p>
       </div>
     </div>
   );
