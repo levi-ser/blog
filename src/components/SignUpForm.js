@@ -1,24 +1,23 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
-const SignUp = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+const SignUpForm = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/signup', {
+      const response = await axios.post("http://localhost:5000/signup", {
         username,
-        password
+        password,
       });
 
       if (response.status === 200) {
-        // User signed up successfully, redirect to login page or perform any other action
         console.log(response.data.message);
-        setUsername('');
-        setPassword('');
+        setUsername("");
+        setPassword("");
       }
     } catch (error) {
       console.error(error);
@@ -53,4 +52,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUpForm;

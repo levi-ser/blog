@@ -5,6 +5,7 @@ import bcrypt
 import uuid
 import json
 import datetime
+from settings import dbpwd
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True, origins=[
@@ -14,7 +15,7 @@ CORS(app, supports_credentials=True, origins=[
 # MySQL Configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '12345678'
+app.config['MYSQL_PASSWORD'] = dbpwd
 app.config['MYSQL_DB'] = 'blog'
 
 # Secret key for signing cookies
@@ -78,7 +79,7 @@ def signup():
     cur = conn.cursor()
 
     # Check if the username already exists
-    cur.execute('SELECT username FROM users WHERE username = %s', (username,))
+    cur.execute('SELECT username  FROM users WHERE username = %s', (username,))
     existing_user = cur.fetchone()
 
     if existing_user:
@@ -111,14 +112,12 @@ def login():
     conn = connect_db()
     cur = conn.cursor()
 
-    # Retrieve the user from the database
     cur.execute('SELECT id, password FROM users WHERE username = %s', (username,))
     user = cur.fetchone()
 
     if user:
         # Check if the password matches
         if bcrypt.checkpw(password.encode('utf-8'), user[2].encode('utf-8')):
-            # Password matches, create a session cookie
             session_id = str(uuid.uuid4())
             query = "INSERT INTO sessions (user_id, session_id) VALUES (%s, %s)"
             values = (user[0], session_id)
@@ -126,7 +125,7 @@ def login():
             print("Values:", values)
             cur.execute(query, values)
             conn.commit()
-            cur.fetchall()  # Consume the result set
+            cur.fetchall()  
             cur.close()
             conn.close()
             response = make_response(
@@ -136,12 +135,12 @@ def login():
             print(session_id)
             return response, 200
         else:
-            cur.fetchall()  # Consume the result set
+            cur.fetchall()  
             cur.close()
             conn.close()
             return jsonify({'message': 'Invalid username or password'})
     else:
-        cur.fetchall()  # Consume the result set
+        cur.fetchall()  
         cur.close()
         conn.close()
         return jsonify({'message': 'Invalid username or password'})
@@ -175,11 +174,11 @@ def logout():
 def get_posts():
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM posts')
+    cur.execute('SELECT id, title, body, created_at FROM posts')
     posts = cur.fetchall()
     cur.close()
     conn.close()
-    # Convert the fetched posts to a list of dictionaries
+
     posts_list = [{'id': post[0], 'title': post[1],
                    'body': post[2], 'created_at': post[3]} for post in posts]
     return jsonify(posts_list)
@@ -229,11 +228,10 @@ def get_post(id):
 def get_latest_posts():
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM posts ORDER BY created_at DESC LIMIT 3')
+    cur.execute('SELECT id, title, body, created_at FROM posts ORDER BY created_at DESC LIMIT 3')
     posts = cur.fetchall()
     cur.close()
     conn.close()
-    # Convert the fetched posts to a list of dictionaries
     posts_list = [{'id': post[0], 'title': post[1],
                    'body': post[2], 'created_at': post[3]} for post in posts]
     return jsonify(posts_list)
@@ -245,11 +243,10 @@ def get_latest_posts():
 def get_popular_posts():
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM posts')
+    cur.execute('SELECT id, title, body, created_at FROM posts')
     posts = cur.fetchall()
     cur.close()
     conn.close()
-    # Convert the fetched posts to a list of dictionaries
     posts_list = [{'id': post[0], 'title': post[1],
                    'body': post[2], 'created_at': post[3]} for post in posts]
     return jsonify(posts_list)
@@ -265,7 +262,6 @@ def get_post_comments(post_id):
     cur.close()
     conn.close()
 
-    # Convert the fetched comments to a list of dictionaries
     comments_list = [{'id': comment[0], 'body': comment[1],
                       'username': comment[2], 'created_at': comment[3]} for comment in comments]
     return jsonify(comments_list)
