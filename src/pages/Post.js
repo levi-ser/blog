@@ -1,28 +1,79 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
+import {
+  CircularProgress,
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Box,
+  Divider
+} from "@mui/material";
 
 const Post = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [commentInput, setCommentInput] = useState("");
 
   useEffect(() => {
     setLoading(true);
 
-    fetch(`http://localhost:5000/posts/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setPost(data);
+    axios
+      .get(`/posts/${id}`)
+      .then((response) => {
+        setPost(response.data);
         setLoading(false);
       })
       .catch((error) => {
         console.error("Error:", error);
         setLoading(false);
       });
+
+    axios
+      .get(`/posts/${id}/comments`)
+      .then((response) => {
+        setComments(response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   }, [id]);
 
+  const handleAddComment = (event) => {
+    event.preventDefault();
+    const body = commentInput;
+
+    axios
+      .post(
+        `/posts/${id}/comments/new`,
+        { post_id: id, body },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        setCommentInput(""); // Clear the comment input field
+        refreshComments(); // Refresh the comments
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  const refreshComments = () => {
+    axios
+      .get(`/posts/${id}/comments`)
+      .then((response) => {
+        setComments(response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
   if (loading) {
-    return <div>Loading...</div>;
+    return <CircularProgress />;
   }
 
   if (!post) {
@@ -30,13 +81,60 @@ const Post = () => {
   }
 
   return (
-    <div className="container">
-      <div>
-        <h1>{post.title}</h1>
-        <p>{post.body}</p>
-        <p>Created at: {post.created_at}</p>
-      </div>
-    </div>
+    <Box sx={{ backgroundColor: "#F5F5DC", minHeight: "100vh" }}>
+      <Container>
+        <div>
+          <Typography variant="h1">{post.title}</Typography>
+          <Typography variant="body1">{post.body}</Typography>
+          <Typography variant="body2">Created at: {post.created_at}</Typography>
+          <Typography variant="body2">Written by: {post.username}</Typography>
+        </div>
+
+        <div>
+          <Typography variant="h2">Comments</Typography>
+          <Divider/> 
+          {comments.map((comment) => (
+            <div key={comment.id}>
+              <Typography variant="body1">{comment.body}</Typography>
+              <Typography variant="body2">
+                Created at: {comment.created_at}
+              </Typography>
+              <Typography variant="body2">
+                Written by: {comment.username}
+              </Typography>
+              <Divider />
+            </div>
+          ))}
+        </div>
+
+        <form onSubmit={handleAddComment}>
+          <TextField
+            name="comment"
+            label="Add Comment"
+            multiline
+            rows={4}
+            fullWidth
+            required
+            variant="outlined"
+            value={commentInput}
+            onChange={(event) => setCommentInput(event.target.value)}
+          />
+          <br />
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              backgroundColor: "#663399",
+              "&:hover": {
+                backgroundColor: "#D8BFD8",
+              },
+            }}
+          >
+            Add Comment
+          </Button>
+        </form>
+      </Container>
+    </Box>
   );
 };
 

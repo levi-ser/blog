@@ -2,6 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
+  
 }
 
 .login-link {
@@ -16,17 +18,16 @@ body {
   margin: 0;
   padding: 0;
   font: italic 1.2em "Fira Sans", Sans-serif;
-  
 }
 
 .container {
-  color: #3E3E3E;
+  color: #3e3e3e;
   background-color: #f2d3cc;
   display: flex;
   width: 100%;
 }
 .title {
-   margin: 10px;
+  margin: 10px;
   padding: 5px;
   font-size: 25px;
 }
@@ -46,9 +47,9 @@ body {
 
 .left-side button {
   margin-right: 10px;
-  background-color: #A07D7F; 
+  background-color: #a07d7f;
   border: none;
-  color: #3E3E3E;;
+  color: #3e3e3e;
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
@@ -57,12 +58,12 @@ body {
   border-radius: 20px;
   transition-duration: 0.4s;
   cursor: pointer;
-   box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .blog-post {
-    box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
-    background-color: #F7D2AA;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+  background-color: #f7d2aa;
   padding: 30px;
   margin-bottom: 30px;
 }
@@ -72,7 +73,6 @@ body {
 
 .blog-post p {
   margin-top: 0;
-  
 }
 
 .right-side {
@@ -82,16 +82,14 @@ body {
   flex-direction: column;
   flex-grow: 1;
   box-sizing: border-box;
-  
-  
 }
 
 .right-side button {
   position: absolute;
   right: 20px;
-  background-color: #A07D7F;
+  background-color: #a07d7f;
   border: none;
-  color: #3E3E3E;
+  color: #3e3e3e;
   padding: 10px 20px;
   text-align: center;
   display: inline-block;
@@ -99,47 +97,40 @@ body {
   border-radius: 20px;
   transition-duration: 0.4s;
   cursor: pointer;
-   box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
 }
-
 
 .right-side h2 {
   margin-top: 20%;
-    font-size: 38px;
+  font-size: 38px;
   text-align: center;
   justify-content: flex;
-  
+
   align-items: center;
-  
-  
-  
 }
 
 .latest-list a,
 .popular-list a {
-display: flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #3E3E3E;
+  color: #3e3e3e;
   padding: 10px 15px;
   border-radius: 8px;
   line-height: 15px;
-  
 }
 .latest-list ul li span,
 .popular-list ul li span {
- display: inline-block;
+  display: inline-block;
   color: #4f4f4f;
   vertical-align: middle;
-  
 }
 .popular-list ul li a,
 .latest-list ul li a {
   display: inline-block;
   vertical-align: middle;
-    align-items: center;
-  
+  align-items: center;
 }
 .latest-list ul,
 .popular-list ul {
@@ -157,7 +148,6 @@ display: flex;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
-  
 }
 .no-list-style {
   list-style-type: none;
