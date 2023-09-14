@@ -8,7 +8,8 @@ import {
   TextField,
   Button,
   Box,
-  Divider
+  Divider,
+  Chip,  // Import Chip component from Material-UI
 } from "@mui/material";
 
 const Post = () => {
@@ -17,10 +18,12 @@ const Post = () => {
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [commentInput, setCommentInput] = useState("");
+  const [tags, setTags] = useState([]); // State to hold post tags
 
   useEffect(() => {
     setLoading(true);
 
+    // Fetch post details
     axios
       .get(`/posts/${id}`)
       .then((response) => {
@@ -32,6 +35,7 @@ const Post = () => {
         setLoading(false);
       });
 
+    // Fetch comments for the post
     axios
       .get(`/posts/${id}/comments`)
       .then((response) => {
@@ -40,8 +44,22 @@ const Post = () => {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, [id]);
 
+    // Fetch tags associated with the post
+    axios
+      .get(`/posts/${id}/tags`)
+      .then((response) => {
+        setTags(response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, [id]);
+  const handleRemoveTag = (tagToRemove) => {
+    // Create a new array with tags except the one to be removed
+    const updatedTags = tags.filter((tag) => tag !== tagToRemove);
+    setTags(updatedTags); // Update the state with the new array of tags
+  };
   const handleAddComment = (event) => {
     event.preventDefault();
     const body = commentInput;
@@ -88,11 +106,19 @@ const Post = () => {
           <Typography variant="body1">{post.body}</Typography>
           <Typography variant="body2">Created at: {post.created_at}</Typography>
           <Typography variant="body2">Written by: {post.username}</Typography>
+          <Typography variant="body2">Views: {post.view_count}</Typography>
+
+          {/* Display tags */}
+          <div>
+            {tags.map((tag) => (
+              <Chip key={tag.id} label={tag.tag_name} />
+            ))}
+          </div>
         </div>
 
         <div>
           <Typography variant="h2">Comments</Typography>
-          <Divider/> 
+          <Divider />
           {comments.map((comment) => (
             <div key={comment.id}>
               <Typography variant="body1">{comment.body}</Typography>

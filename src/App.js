@@ -32,7 +32,7 @@ const App = () => {
           <Route path="contact" element={<ContactMe />} />
           <Route path="newpost" element={<NewPost />} />
           <Route path="myposts" element={<MyPost />} />
-          <Route path="posts" element={<PostsComponent />} />
+          <Route path="posts" element={<PostsComponent  showSortButton={true} />} />
           <Route path="posts/:id" element={<Post />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="login" element={<LoginRoute setLoggedIn={setLoggedIn} />} />

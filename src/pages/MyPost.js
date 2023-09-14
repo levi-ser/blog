@@ -6,6 +6,8 @@ import { Box, Button, Container, Typography, TextField } from "@mui/material";
 const EditForm = ({ post, onSave, onCancel }) => {
   const [newTitle, setNewTitle] = useState(post.title);
   const [newBody, setNewBody] = useState(post.body);
+  const [newTags, setNewTags] = useState(post.tags.split(',').map(tag => tag.trim()) || []); // Convert comma-separated string to an array, or initialize as an empty array if no tags
+// Initialize with existing tags
 
   const handleTitleChange = (event) => {
     setNewTitle(event.target.value);
@@ -15,9 +17,14 @@ const EditForm = ({ post, onSave, onCancel }) => {
     setNewBody(event.target.value);
   };
 
+  const handleTagsChange = (event) => {
+    setNewTags(event.target.value.split(',').map(tag => tag.trim())); // Split input by commas and trim whitespace
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSave(newTitle, newBody);
+    console.log("newTags:", newTags);
+    onSave(newTitle, newBody, newTags); // Pass the newTags to the onSave function
   };
 
   return (
@@ -39,6 +46,13 @@ const EditForm = ({ post, onSave, onCancel }) => {
         required
         multiline
         rows={4}
+      />
+      <TextField
+        label="Tags"
+        variant="outlined"
+        fullWidth
+        value={newTags.join(', ')} // Convert the array of tags back to a comma-separated string
+        onChange={handleTagsChange}
       />
       <Button type="submit" variant="contained" sx={{
                       backgroundColor: "#663399",
@@ -88,16 +102,20 @@ const MyPost = () => {
     setEditedPostId(postId);
   };
 
-  const handleSave = (postId, newTitle, newBody) => {
+  const handleSave = (postId, newTitle, newBody, newTags) => {
     axios
       .put(
         `/myposts/${postId}/edit`,
         {
           title: newTitle,
           body: newBody,
+          tags: newTags, // Include the newTags in the request body
         },
         {
           withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json', // Set the content type to JSON
+          },
         }
       )
       .then((response) => {
@@ -108,6 +126,7 @@ const MyPost = () => {
               ...post,
               title: newTitle,
               body: newBody,
+              tags: newTags, // Update the tags with the newTags
             };
           }
           return post;
@@ -154,8 +173,8 @@ const MyPost = () => {
               {editedPostId === post.id ? (
                 <EditForm
                   post={post}
-                  onSave={(newTitle, newBody) =>
-                    handleSave(post.id, newTitle, newBody)
+                  onSave={(newTitle, newBody, newTags) =>
+                    handleSave(post.id, newTitle, newBody, newTags)
                   }
                   onCancel={handleCancel}
                 />
@@ -173,6 +192,9 @@ const MyPost = () => {
                   <Typography variant="body2" gutterBottom>
                     Written by: {post.username}
                   </Typography>
+                  <Typography variant="body2" gutterBottom>
+      Tags: {post.tags}
+    </Typography>
                   <Button
                     variant="contained"
                     onClick={() => handleEdit(post.id)}

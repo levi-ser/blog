@@ -1,22 +1,29 @@
-import mysql.connector as mysql
+import mysql.connector.pooling
 
 app_config = {
     'MYSQL_HOST': 'localhost',
     'MYSQL_USER': 'root',
-    'MYSQL_PASSWORD': '12345678',
+    'MYSQL_PASSWORD': '"insert your password/or import"',
     'MYSQL_DB': 'blog'
 }
 
-def connect_db():
-    return mysql.connect(
-        host=app_config['MYSQL_HOST'],
-        user=app_config['MYSQL_USER'],
-        password=app_config['MYSQL_PASSWORD'],
-        database=app_config['MYSQL_DB']
-    )
+# Create a connection pool
+pool = mysql.connector.pooling.MySQLConnectionPool(
+    pool_name="mypool",
+    pool_size=3,
+    host=app_config['MYSQL_HOST'],
+    user=app_config['MYSQL_USER'],
+    password=app_config['MYSQL_PASSWORD'],
+    database=app_config['MYSQL_DB'],
+    buffered=True
+)
+
+# Function to get a database connection from the pool
+def get_db_connection():
+    return pool.get_connection()
 
 def create_sessions_table():
-    conn = connect_db()
+    conn = get_db_connection()
     cur = conn.cursor()
     cur.execute('''
         CREATE TABLE IF NOT EXISTS sessions (

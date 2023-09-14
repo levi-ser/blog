@@ -2,9 +2,9 @@ from flask import Flask, make_response
 from flask_cors import CORS
 from modules.auth import signup, login, logout, check_login
 from modules.posts import (
-    get_posts, create_post,get_user_posts, get_post, edit_post, delete_post,
-    get_latest_posts, get_popular_posts, get_post_comments, create_comment
-)
+get_posts, create_post, get_user_posts, get_post, edit_post, delete_post,
+    get_latest_posts, get_popular_posts, get_post_comments, create_comment )
+
 from modules.database import create_sessions_table
 
 app = Flask(__name__)
@@ -20,7 +20,6 @@ app.route('/signup', methods=['POST'])(signup)
 app.route('/login', methods=['POST'])(login)
 app.route('/logout', methods=['POST'])(logout)
 
-
 # post
 app.route('/posts', methods=['GET'])(get_posts)
 app.route('/posts/new', methods=['POST'])(create_post)
@@ -32,6 +31,8 @@ app.route('/posts/latest', methods=['GET'])(get_latest_posts)
 app.route('/posts/popular', methods=['GET'])(get_popular_posts)
 app.route('/posts/<int:post_id>/comments', methods=['GET'])(get_post_comments)
 app.route('/posts/<int:post_id>/comments/new', methods=['POST'])(create_comment)
+
+
 
 if __name__ == '__main__':
     app.run()

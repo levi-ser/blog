@@ -1,17 +1,17 @@
 # auth.py
 
 from flask import jsonify, request, make_response
+from modules.database import get_db_connection
 import bcrypt
 import uuid
 
-from modules.database import connect_db
 
 def signup():
     data = request.get_json()
     username = data['username']
     password = data['password']
 
-    conn = connect_db()
+    conn = get_db_connection()
     cur = conn.cursor()
 
     # Check if the username already exists
@@ -41,7 +41,7 @@ def login():
     username = data['username']
     password = data['password']
 
-    conn = connect_db()
+    conn = get_db_connection()
     cur = conn.cursor()
 
     cur.execute('SELECT id, username, password FROM users WHERE username = %s', (username,))
@@ -86,7 +86,7 @@ def logout():
     if session_id:
         query = "DELETE FROM sessions WHERE session_id = %s"
         values = (session_id,)
-        conn = connect_db()
+        conn = get_db_connection()
         cur = conn.cursor()
         cur.execute(query, values)
         conn.commit()
@@ -102,7 +102,7 @@ def check_login():
     session_id = request.cookies.get("session_id")
     print(session_id)
     if session_id is not None:
-        conn = connect_db()
+        conn = get_db_connection()
         cur = conn.cursor()
         cur.execute('SELECT session_id  FROM sessions WHERE session_id = %s',
                     (session_id,))
