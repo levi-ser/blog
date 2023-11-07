@@ -25,7 +25,7 @@ const Post = () => {
 
     // Fetch post details
     axios
-      .get(`/posts/${id}`)
+      .get(`http://localhost:5000/posts/${id}`)
       .then((response) => {
         setPost(response.data);
         setLoading(false);
@@ -37,7 +37,7 @@ const Post = () => {
 
     // Fetch comments for the post
     axios
-      .get(`/posts/${id}/comments`)
+      .get(`http://localhost:5000/posts/${id}/comments`)
       .then((response) => {
         setComments(response.data);
       })
@@ -47,7 +47,7 @@ const Post = () => {
 
     // Fetch tags associated with the post
     axios
-      .get(`/posts/${id}/tags`)
+      .get(`http://localhost:5000/posts/${id}/tags`)
       .then((response) => {
         setTags(response.data);
       })
@@ -66,7 +66,7 @@ const Post = () => {
 
     axios
       .post(
-        `/posts/${id}/comments/new`,
+        `http://localhost:5000/posts/${id}/comments/new`,
         { post_id: id, body },
         { withCredentials: true }
       )
@@ -81,7 +81,7 @@ const Post = () => {
 
   const refreshComments = () => {
     axios
-      .get(`/posts/${id}/comments`)
+      .get(`http://localhost:5000/posts/${id}/comments`)
       .then((response) => {
         setComments(response.data);
       })
@@ -100,68 +100,68 @@ const Post = () => {
 
   return (
     <Box sx={{ backgroundColor: "#F5F5DC", minHeight: "100vh" }}>
-      <Container>
-        <div>
-          <Typography variant="h1">{post.title}</Typography>
-          <Typography variant="body1">{post.body}</Typography>
-          <Typography variant="body2">Created at: {post.created_at}</Typography>
-          <Typography variant="body2">Written by: {post.username}</Typography>
-          <Typography variant="body2">Views: {post.view_count}</Typography>
+        <Container>
+            <div>
+                <Typography variant="h1">{post.title}</Typography>
+                <Typography variant="body1">{post.body}</Typography>
+                <Typography variant="body2">Created at: {post.created_at}</Typography>
+                <Typography variant="body2">Written by: {post.username}</Typography>
+                <Typography variant="body2">Views: {post.view_count}</Typography>
 
-          {/* Display tags */}
-          <div>
-            {tags.map((tag) => (
-              <Chip key={tag.id} label={tag.tag_name} />
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <Typography variant="h2">Comments</Typography>
-          <Divider />
-          {comments.map((comment) => (
-            <div key={comment.id}>
-              <Typography variant="body1">{comment.body}</Typography>
-              <Typography variant="body2">
-                Created at: {comment.created_at}
-              </Typography>
-              <Typography variant="body2">
-                Written by: {comment.username}
-              </Typography>
-              <Divider />
+                {/* Display tags */}
+                <div>
+                    {tags.map((tag) => (
+                        <Chip key={tag} label={tag} />
+                    ))}
+                </div>
             </div>
-          ))}
-        </div>
 
-        <form onSubmit={handleAddComment}>
-          <TextField
-            name="comment"
-            label="Add Comment"
-            multiline
-            rows={4}
-            fullWidth
-            required
-            variant="outlined"
-            value={commentInput}
-            onChange={(event) => setCommentInput(event.target.value)}
-          />
-          <br />
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              backgroundColor: "#663399",
-              "&:hover": {
-                backgroundColor: "#D8BFD8",
-              },
-            }}
-          >
-            Add Comment
-          </Button>
-        </form>
-      </Container>
+            <div>
+                <Typography variant="h2">Comments</Typography>
+                <Divider />
+                {comments.map((comment) => (
+                    <div key={comment.id}>
+                        <Typography variant="body1">{comment.body}</Typography>
+                        <Typography variant="body2">
+                            Created at: {comment.created_at}
+                        </Typography>
+                        <Typography variant="body2">
+                            Written by: {comment.username}
+                        </Typography>
+                        <Divider />
+                    </div>
+                ))}
+            </div>
+
+            <form onSubmit={handleAddComment}>
+                <TextField
+                    name="comment"
+                    label="Add Comment"
+                    multiline
+                    rows={4}
+                    fullWidth
+                    required
+                    variant="outlined"
+                    value={commentInput}
+                    onChange={(event) => setCommentInput(event.target.value)}
+                />
+                <br />
+                <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                        backgroundColor: "#663399",
+                        "&:hover": {
+                            backgroundColor: "#D8BFD8",
+                        },
+                    }}
+                >
+                    Add Comment
+                </Button>
+            </form>
+        </Container>
     </Box>
-  );
+);
 };
 
 export default Post;

@@ -7,7 +7,7 @@ const Logout = ({ setLoggedIn, loggedIn }) => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post("/logout", null, {
+      const response = await axios.post("http://localhost:5000/logout", null, {
         withCredentials: true
       });
       if (response.status === 200) {

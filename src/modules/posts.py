@@ -8,10 +8,6 @@ from modules.database import get_db_connection
 
 
 
-
-
-
-
 def get_posts():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -341,6 +337,38 @@ def create_comment(post_id):
             conn.close()
 
             return jsonify({'message': 'Comment created successfully'})
+        
+
+
+
+
+def get_user_tags(post_id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # Modified SQL query to retrieve tags associated with the post
+    cur.execute('''
+    SELECT 
+        GROUP_CONCAT(IFNULL(tags.tag_name, '') SEPARATOR ', ') AS tags
+    FROM 
+        post_tags 
+    LEFT JOIN 
+        tags 
+        ON post_tags.tag_id = tags.id
+    WHERE 
+        post_tags.post_id = %s
+''', (post_id,))
+
+    tags = cur.fetchone()
+    cur.close()
+    conn.close()
+    print(tags)
+    if tags:
+        post_tags = tags[0].split(', ')
+        return jsonify(post_tags)
+
+    return jsonify([])  # Return an empty list if no tags are found for the post
+      
         
     # If the session_id is not found or the user is not authenticated, return an error response
     return jsonify({'message': 'Authentication required'}), 401

@@ -8,7 +8,7 @@ const LatestPosts = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get("/posts/latest");
+        const response = await axios.get("http://localhost:5000/posts/latest");
         setPosts(response.data);
       } catch (error) {
         console.error("Error fetching latest posts:", error);

@@ -10,7 +10,7 @@ const PostComponent = ({ showSortButton }) => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get(`/posts?sort=${sortOrder}`); // Pass the sortOrder as a query parameter
+      const response = await axios.get(`http://localhost:5000/posts?sort=${sortOrder}`); // Pass the sortOrder as a query parameter
       setPosts(response.data);
     } catch (error) {
       console.error(error);

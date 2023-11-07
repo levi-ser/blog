@@ -17,7 +17,7 @@ const LoginForm = ({ setLoggedIn, loggedIn }) => {
     }
     try {
       const response = await axios.post(
-        "/login",
+        "http://localhost:5000/login",
         { username, password },
         { withCredentials: true }
       );

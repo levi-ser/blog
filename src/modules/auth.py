@@ -46,7 +46,6 @@ def login():
 
     cur.execute('SELECT id, username, password FROM users WHERE username = %s', (username,))
     user = cur.fetchone()
-    print(user)
 
     if user is not None:
         # Check if the password matches
@@ -55,30 +54,24 @@ def login():
             session_id = str(uuid.uuid4())
             query = "INSERT INTO sessions (user_id, session_id) VALUES (%s, %s)"
             values = (user[0], session_id)
-            print("Query:", query)
-            print("Values:", values)
             cur.execute(query, values)
             conn.commit()
-            cur.fetchall()  
             cur.close()
             conn.close()
+
             response = make_response(
                 jsonify({'message': 'User logged in successfully', 'loggedIn': True}))
-            response.set_cookie('session_id', session_id,
-                                path='/', samesite='None', secure=True)
-            print(session_id)
+            response.set_cookie('session_id', value=session_id, path='/')
             return response, 200
         else:
-            cur.fetchall()  
             cur.close()
             conn.close()
             return jsonify({'message': 'Invalid username or password'}), 401
     else:
-        cur.fetchall()  
         cur.close()
         conn.close()
-        return jsonify({'message': 'Invalid username or password'}) ,401
-
+        return jsonify({'message': 'Invalid username or password'}), 401
+    
 def logout():
     session_id = request.cookies.get('session_id')
     print(session_id)

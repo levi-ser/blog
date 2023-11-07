@@ -85,7 +85,7 @@ const MyPost = () => {
     setLoading(true);
 
     axios
-      .get(`/myposts`, {
+      .get(`http://localhost:5000/myposts`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -105,7 +105,7 @@ const MyPost = () => {
   const handleSave = (postId, newTitle, newBody, newTags) => {
     axios
       .put(
-        `/myposts/${postId}/edit`,
+        `http://localhost:5000/myposts/${postId}/edit`,
         {
           title: newTitle,
           body: newBody,
@@ -147,7 +147,7 @@ const MyPost = () => {
   const handleRemove = (postId) => {
     if (window.confirm("Are you sure you want to delete this post?")) {
       axios
-        .delete(`/myposts/${postId}/delete`, {
+        .delete(`http://localhost:5000/myposts/${postId}/delete`, {
           withCredentials: true,
         })
         .then((response) => {

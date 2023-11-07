@@ -38,7 +38,7 @@ const NewPost = () => {
 
     try {
       const response = await axios.post(
-        "/posts/new",
+        "http://localhost:5000/posts/new",
         {
           title,
           body,

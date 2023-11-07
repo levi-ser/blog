@@ -2,9 +2,9 @@ import mysql.connector.pooling
 
 app_config = {
     'MYSQL_HOST': 'localhost',
-    'MYSQL_USER': 'root',
-    'MYSQL_PASSWORD': '"insert your password/or import"',
-    'MYSQL_DB': 'blog'
+    'MYSQL_USER': 'your user',
+    'MYSQL_PASSWORD': 'your password',
+    'MYSQL_DB': 'your DB'
 }
 
 # Create a connection pool
